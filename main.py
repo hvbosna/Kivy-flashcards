@@ -22,31 +22,30 @@ class LoadDialog(FloatLayout):
 	cancel = ObjectProperty(None)
 
 class FlashcardApp(App):
-    
-    def __init__(self, **kwargs):
-        super(FlashcardApp, self).__init__(**kwargs)
-	self.mycardlist = geniusflash.readcards()
-        self.currcard= geniusflash.getrandomcard(self.mycardlist)
-	self.toggle = 0
+	def __init__(self, **kwargs):
+		super(FlashcardApp, self).__init__(**kwargs)
+		self.mycardlist = geniusflash.readcards()
+		self.currcard= geniusflash.getrandomcard(self.mycardlist)
+		self.toggle = 0
 
-    def on_pause(self):
-        return True
- 
-    def dismiss_popup(self):
+def on_pause(self):
+	return True
+
+def dismiss_popup(self):
 	self._popup.dismiss()
-   
-    def updateLoad(self, *args):
+
+def updateLoad(self, *args):
 	content = FileChooserIconView()
 	popup = Popup(content=content, title='Answer',
-                      size_hint=(None, None), size=(300, 300),
-                      auto_dismiss=True)	
+					size_hint=(None, None), size=(300, 300),
+					auto_dismiss=True)	
 	popup.open()
-    
-    def saveCard(self, *args):
+
+def saveCard(self, *args):
 	self.mycardlist.append(geniusflash.addCard("", self.questionTI.text, self.answerTI.text, ""))
 	self.addpopup.dismiss()
 
-    def addCard(self, *args):
+def addCard(self, *args):
 	content = BoxLayout(orientation='vertical')
 	self.questionTI = TextInput()
 	self.answerTI = TextInput()
@@ -66,13 +65,13 @@ class FlashcardApp(App):
 	content.add_widget(lowbox)
 
 	self.addpopup = Popup(content=content, title='New card',
-                      size_hint=(.7, .4), pos_hint={'top':1},
-                      auto_dismiss=False, anchor_y='top')
-        btncancel.bind(on_release=self.addpopup.dismiss)
+					size_hint=(.7, .4), pos_hint={'top':1},
+					auto_dismiss=False, anchor_y='top')
+	btncancel.bind(on_release=self.addpopup.dismiss)
 	self.addpopup.open()
-	
 
-    def updateAnsLabel(self, *args):
+
+def updateAnsLabel(self, *args):
 	if (self.currcard == []):
 		return;
 	if (self.toggle):
@@ -81,12 +80,12 @@ class FlashcardApp(App):
 		answerTxt = geniusflash.getanswer(self.currcard) 
 	content = Label(text=answerTxt, font_size=72, halign='center', text_size=(780, None));
 	popup = Popup(content=content, title='Answer',
-                      size_hint=(None, None), size=(300, 300),
-                      auto_dismiss=True)	
+					size_hint=(None, None), size=(300, 300),
+					auto_dismiss=True)	
 	popup.open()
 	return self.wordtxt
-    
-    def updateToggle(self, *args):
+
+def updateToggle(self, *args):
 	if (self.currcard == []):
 		return;
 	if (self.toggle):
@@ -99,8 +98,8 @@ class FlashcardApp(App):
 		self.toggleButton.text = "B->A"
 	self.questionLabel.text = self.wordtxt 
 
-	
-    def updateCard(self, *args):
+
+def updateCard(self, *args):
 	if (self.mycardlist == []):
 		return;
 	self.currcard= geniusflash.getrandomcard(self.mycardlist)
@@ -112,7 +111,7 @@ class FlashcardApp(App):
 	self.notesLabel.text = geniusflash.getnotes(self.currcard) 
 	return self.currcard
 
-    def drawstuff(self, labeltxt):
+def drawstuff(self, labeltxt):
 	root = BoxLayout(orientation='vertical')
 	topbox = BoxLayout(orientation='vertical')
 	lowerbox = BoxLayout()
@@ -151,7 +150,7 @@ class FlashcardApp(App):
 
 	return root;
 
-    def build(self):
+def build(self):
 	self.wordtxt = geniusflash.getquestion(self.currcard)
 	self.rootbox = self.drawstuff(self.wordtxt)
 	return self.rootbox
